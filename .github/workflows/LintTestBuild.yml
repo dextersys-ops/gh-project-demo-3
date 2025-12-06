@@ -1,0 +1,19 @@
+name: Lint, Test, Build/Deploy
+on: [push, workflow_dispatch]
+
+#define the jobs
+jobs:
+    lint_job:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Checkout the code
+          uses: actions/checkout@v4
+        - name: Install the NodeJS
+          uses: actions/setup-node@v3
+          with:
+            node-version: 18
+        - name: Install the dependencies
+          run : npm ci
+        - name : Run Lint
+          run : npm lint
+          
