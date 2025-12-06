@@ -3,7 +3,7 @@ on: [push, workflow_dispatch]
 
 #define the jobs
 jobs:
-    lint_job:
+    lint_test_job:
         runs-on: ubuntu-latest
         steps:
         - name: Checkout the code
@@ -15,5 +15,25 @@ jobs:
         - name: Install the dependencies
           run : npm ci
         - name : Run Lint
-          run : npm lint
-          
+          run : npm run lint
+        - name: Run NPM Test
+          run: npm test
+    build_deploy:
+        needs: lint_test_job
+        runs-on: ubuntu-latest
+        steps:
+        - name: Checkout the code
+          uses: actions/checkout@v4
+        - name: Install the NodeJS
+          uses: actions/setup-node@v3
+          with:
+            node-version: 18
+        - name: Install the dependencies
+          run : npm ci
+        - name : Building the NPM Project
+          run : npm run build
+        - name : Deploying the NPM Project
+          run : echo "Deploying the project to Cloud ..."
+
+
+
